@@ -27,16 +27,14 @@ Initialize(function()
     local artiX = Skill.find("ror-artiX")
     Chat = Instance.find(gm.constants.oInit)
 
-    Callback.add("onGameStart", "SmallFixes-onGameStart", function()
+    Callback.add("onStageStart", "SmallFixes-onStageStart", function()
         WormAttackY = {}
     end)
-
     Callback.add("onPlayerInit", "SmallFixes-onPlayerInit", function(self)
         player = Player.get_client()
     end)
 
     gm.post_script_hook(gm.constants.instance_create_depth, function(self, other, result, args)
-
         if params.ArtiSecondaryFix then
             -- Fix Nanospear with backup mag
             if result.value.object_index == gm.constants.oEfArtiNanobolt and self.m_id == player.m_id then
@@ -109,6 +107,7 @@ Initialize(function()
     Alarm.create(PreviousTalking, 1)
 end)
 
+-- add key rebind
 local awaitingKeybind = false
 gui.add_imgui(function()
     if ImGui.Begin("Misc Fixes") then
