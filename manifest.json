@@ -1,8 +1,8 @@
 {
-	"name": "ArtificerPlus",
-	"version_number": "1.3.2",
+	"name": "MiscFixes",
+	"version_number": "1.0.0",
 	"website_url": "https://github.com/Tizitendo/0n_x-MiscFixes",
-	"description": "Adds QOL elements and buffs artis alts",
+	"description": "Miscelaneous fixes for some small base game bugs and problems",
 	"dependencies": [
 		"ReturnOfModding-ReturnOfModding-1.0.48",
 		"RoRRModdingToolkit-RoRR_Modding_Toolkit-1.1.24",
