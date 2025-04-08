@@ -1,6 +1,6 @@
 {
 	"name": "MiscFixes",
-	"version_number": "1.2.0",
+	"version_number": "1.2.1",
 	"website_url": "https://github.com/Tizitendo/0n_x-MiscFixes",
 	"description": "Miscelaneous fixes for some small base game bugs and problems",
 	"dependencies": [

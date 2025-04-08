@@ -113,6 +113,15 @@ Initialize(function()
         end
     end)]]
 
+    Callback.add("onStageStart", "resetnanospear", function()
+        if artiX2 ~= nil then
+            artiX2.required_stock = 1
+        end
+        if artiX ~= nil then
+            artiX.required_stock = 1
+        end
+    end)
+
     gm.post_script_hook(gm.constants.instance_create_depth, function(self, other, result, args)
         if params.ArtiSecondaryFix then
             -- Fix Nanospear with backup mag
@@ -145,14 +154,14 @@ Initialize(function()
         end
 
         -- get ground position below worm by gettting the position the fire is placed
-        if result.value.object_index == gm.constants.oFireTrail and self.object_index == gm.constants.oWorm then
+        if result.value.object_index == gm.constants.oFireTrail and self ~= nil and self.object_index == gm.constants.oWorm then
             table.insert(WormAttackY, result.value.y)
         end
     end)
 
     -- change worm attack y position to highest point where fire was generated
     gm.pre_script_hook(gm.constants.fire_explosion, function(self, other, result, args)
-        if params.MagmaWormHitBoxFix and self.object_index == gm.constants.oWorm then
+        if Mod.find("RandomCatDude-DeerectorsCut") == nil and params.MagmaWormHitBoxFix and self.object_index == gm.constants.oWorm then
             args[3].value = WormAttackY[1]
             args[9].value = 5
         end

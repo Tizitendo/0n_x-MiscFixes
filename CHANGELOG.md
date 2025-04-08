@@ -1,3 +1,7 @@
+## 1.2.1
+* Fixed potential Artificer bug
+* disabled wormhitboxfix when deerectorscut is installed, as it does it's own fix
+
 ## 1.2.0
 * You can now rebind the open console button (requires enableconsole)
 
