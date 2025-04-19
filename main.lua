@@ -13,7 +13,9 @@ mods.on_all_mods_loaded(function()
         TooltipFix = true,
         ArtiSecondaryFix = true,
         MagmaWormHitBoxFix = true,
-        UnlockZoom = true
+        UnlockZoom = true,
+        MiniInvinicibleHud = true,
+        AdaptiveFix = true
     }
     params = Toml.config_update(_ENV["!guid"], params) -- Load Save
 end)
@@ -180,6 +182,40 @@ Initialize(function()
         end
     end)
 
+    -- invincible for mini health hud
+    gm.post_script_hook(gm.constants.hud_draw_health, function(self, other, result, args)
+        local actor = Instance.wrap(args[1].value)
+        if params.MiniInvinicibleHud and self and
+        self.object_index == gm.constants.oP 
+        and actor.m_id == Player.get_client().m_id 
+        and actor:is_immune() then
+            if actor.invincible > 1000 then
+                gm.draw_set_color(Color.WHITE)
+                gm.draw_rectangle(math.floor(actor.x + 0.5 - 38), math.floor(actor.y + 0.5 - 74), 
+                                math.floor(actor.x + 0.5 - 38) + 75 * (actor.hp/actor.maxhp), math.floor(actor.y + 0.5 - 69), false)
+                gm.scribble_set_starting_format("fntSquareSmall", Color.WHITE, 0)
+                gm.scribble_set_box_align(1, 1)
+                gm.scribble_draw(math.floor(actor.x + 1.5), math.floor(actor.y + 0.5 - 71), "INVINCIBLE")
+                gm.scribble_reset()
+            else
+                gm.draw_set_color(Color.from_hex(0xdad277))
+                gm.draw_rectangle(math.floor(actor.x + 0.5 - 38), math.floor(actor.y + 0.5 - 74), 
+                                math.floor(actor.x + 0.5 - 38) + 75 * (actor.hp/actor.maxhp), math.floor(actor.y + 0.5 - 69), false)
+                gm.scribble_set_starting_format("fntSquareSmall", Color.WHITE, 0)
+                gm.scribble_set_box_align(1, 1)
+                gm.scribble_draw(math.floor(actor.x + 0.5), math.floor(actor.y + 0.5 - 71), "IMMUNE")
+                gm.scribble_reset()
+            end
+        end
+    end)
+    
+    -- adaptive chest fix
+    gm.pre_script_hook(gm.constants.interactable_set_active, function(self, other, result, args)
+        if params.AdaptiveFix and args[1].value.object_index == gm.constants.oChest4 and args[3].value == 2 and args[1].value:alarm_get(0) == 0 then
+            args[1].value.item_id = args[1].value.item_id_previous
+        end
+    end)
+
     -- disable default console keybind by giving an extra arg when calling it with new keybind
     gm.pre_script_hook(gm.constants.anon_gml_Object_oConsole_Create_0_21502241_gml_Object_oConsole_Create_0,
         function(self, other, result, args)
@@ -244,6 +280,8 @@ gui.add_imgui(function()
         params.ArtiSecondaryFix = ImGui.Checkbox("Fix Arti Secondary Double Firing", params.ArtiSecondaryFix)
         params.MagmaWormHitBoxFix = ImGui.Checkbox("Fix undodgeable magma worm hitbox", params.MagmaWormHitBoxFix)
         params.UnlockZoom = ImGui.Checkbox("UnlockZoom", params.UnlockZoom)
+        params.AdaptiveFix = ImGui.Checkbox("AdaptiveFix", params.AdaptiveFix)
+        params.MiniInvinicibleHud = ImGui.Checkbox("MiniInvinicibleHud", params.MiniInvinicibleHud)
         Toml.save_cfg(_ENV["!guid"], params)
     end
     ImGui.End()

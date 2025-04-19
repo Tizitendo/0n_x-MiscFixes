@@ -1,3 +1,7 @@
+## 1.2.2
+* added mini invincible hud
+* added adaptive chest fix
+
 ## 1.2.1
 * Fixed potential Artificer bug
 * disabled wormhitboxfix when deerectorscut is installed, as it does it's own fix
